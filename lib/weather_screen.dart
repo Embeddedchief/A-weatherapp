@@ -9,13 +9,10 @@ class WeatherScreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
+            SizedBox(width: 20),
             Text('Check your Weather today'),
-            GestureDetector(
-              onTap: () {
-                print('refreshed');
-              },
-              child: Icon(Icons.refresh),
-            ),
+            SizedBox(width: 5),
+            IconButton(onPressed: () {}, icon: Icon(Icons.refresh)),
           ],
         ),
       ),
