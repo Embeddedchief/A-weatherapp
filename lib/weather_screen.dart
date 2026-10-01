@@ -71,92 +71,22 @@ class WeatherScreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 5),
+            SizedBox(height: 1),
 
-            Row(
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: Card(
-                    child: Column(
-                      children: [
-                        Text(
-                          '03:00',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        SizedBox(height: 5),
-
-                        Icon(Icons.cloud, size: 30),
-
-                        SizedBox(height: 5),
-
-                        Text('Sunny'),
-                      ],
-                    ),
-                  ),
-                ),
-
-                SizedBox(width: 2),
-
-                SizedBox(
-                  width: 100,
-                  child: Card(
-                    child: Column(
-                      children: [
-                        Text(
-                          '03:00',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        SizedBox(height: 5),
-
-                        Icon(Icons.cloud, size: 30),
-
-                        SizedBox(height: 5),
-
-                        Text('Sunny'),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // SizedBox(width: 2),
-
-                // SizedBox(
-                //   width: 100,
-                //   child: Card(
-                //     child: Column(
-                //       children: [
-                //         Text(
-                //           '03:00',
-                //           style: TextStyle(
-                //             fontSize: 16,
-                //             fontWeight: FontWeight.bold,
-                //           ),
-                //         ),
-
-                //         SizedBox(height: 5),
-
-                //         Icon(Icons.cloud, size: 30),
-
-                //         SizedBox(height: 5),
-
-                //         Text('Sunny'),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  SizedBox(width: 100, child: WeatherForcastCards()),
+                  SizedBox(width: 100, child: WeatherForcastCards()),
+                  WeatherForcastCards(),
+                  WeatherForcastCards(),
+                  WeatherForcastCards(),
+                ],
+              ),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
             Align(
               alignment: Alignment.centerLeft,
@@ -169,6 +99,32 @@ class WeatherScreen extends StatelessWidget {
             SizedBox(height: 5),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class WeatherForcastCards extends StatelessWidget {
+  const WeatherForcastCards({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Text(
+            '03:00',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+
+          SizedBox(height: 5),
+
+          Icon(Icons.cloud, size: 30),
+
+          SizedBox(height: 5),
+
+          Text('Sunny'),
+        ],
       ),
     );
   }
