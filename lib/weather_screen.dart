@@ -79,14 +79,14 @@ class WeatherScreen extends StatelessWidget {
                 children: [
                   SizedBox(width: 100, child: WeatherForcastCards()),
                   SizedBox(width: 100, child: WeatherForcastCards()),
-                  WeatherForcastCards(),
-                  WeatherForcastCards(),
-                  WeatherForcastCards(),
+                  SizedBox(width: 100, child: WeatherForcastCards()),
+                  SizedBox(width: 100, child: WeatherForcastCards()),
+                  SizedBox(width: 100, child: WeatherForcastCards()),
                 ],
               ),
             ),
 
-            SizedBox(height: 10),
+            SizedBox(height: 20),
 
             Align(
               alignment: Alignment.centerLeft,
@@ -96,7 +96,48 @@ class WeatherScreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 5),
+            SizedBox(height: 10),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: additionalInformationCard(
+                      'Humidity',
+                      '65%',
+                      Icons.water_outlined,
+                      Color.fromARGB(255, 161, 205, 253),
+                    ),
+                  ),
+
+                  SizedBox(width: 2),
+
+                  SizedBox(
+                    width: 100,
+                    child: additionalInformationCard(
+                      'Hotness',
+                      '28°C',
+                      Icons.thermostat,
+                      Color.fromARGB(255, 252, 199, 161),
+                    ),
+                  ),
+
+                  SizedBox(width: 2),
+
+                  SizedBox(
+                    width: 100,
+                    child: additionalInformationCard(
+                      'Wind',
+                      '12 km/h',
+                      Icons.air,
+                      Color.fromARGB(255, 161, 252, 205),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -104,6 +145,7 @@ class WeatherScreen extends StatelessWidget {
   }
 }
 
+//template for weather forecast widgets
 class WeatherForcastCards extends StatelessWidget {
   const WeatherForcastCards({super.key});
 
@@ -128,4 +170,32 @@ class WeatherForcastCards extends StatelessWidget {
       ),
     );
   }
+}
+
+//template for additional information widget
+
+Widget additionalInformationCard(
+  String condition,
+  String temperature,
+  IconData icon,
+  Color cardColor,
+) {
+  return Container(
+    padding: EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: cardColor,
+      borderRadius: BorderRadius.circular(16),
+    ),
+    child: Column(
+      children: [
+        Icon(icon),
+
+        Text(condition),
+
+        SizedBox(height: 5),
+
+        Text(temperature, style: TextStyle(fontWeight: FontWeight.bold)),
+      ],
+    ),
+  );
 }
