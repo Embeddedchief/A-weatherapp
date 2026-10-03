@@ -1,11 +1,59 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class WeatherScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
+
+  @override
+  State<WeatherScreen> createState() => _WeatherScreenState();
+}
+
+class _WeatherScreenState extends State<WeatherScreen> {
+  final String apiKey = '26a3431624be829597083beacd1318db';
+  double temperature = 600.45;
+  String condition = 'Sunny';
+  double sunrise = 2344;
+  double sunset = 2344;
+  String measure = '°F';
+
+  //Weather geter async function
+  Future getCurrentWeather(String location) async {
+    final url = Uri.parse(
+      'https://api.openweathermap.org/data/2.5/weather?q=$location,uk&APPID=$apiKey',
+    );
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        setState(() {
+          temperature = data['main']['temp'];
+          sunrise = (data['sys']['sunrise'] as num).toDouble();
+          sunset = (data['sys']['sunset'] as num).toDouble();
+        });
+  
+        print(jsonDecode(response.body));
+      } else {
+        print('Request Failed: ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         title: Row(
           children: [
@@ -17,7 +65,12 @@ class WeatherScreen extends StatelessWidget {
 
             SizedBox(width: 35),
 
-            IconButton(onPressed: () {}, icon: Icon(Icons.refresh)),
+            IconButton(
+              onPressed: () {
+                getCurrentWeather('London');
+              },
+              icon: Icon(Icons.refresh),
+            ),
           ],
         ),
       ),
@@ -35,7 +88,7 @@ class WeatherScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "600.45° F",
+                        '${temperature.toString()} $measure',
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight(700),
@@ -49,7 +102,7 @@ class WeatherScreen extends StatelessWidget {
                       SizedBox(height: 5),
 
                       Text(
-                        "Sunny",
+                        condition,
                         style: TextStyle(
                           fontSize: 20,
                           fontStyle: FontStyle.italic,
@@ -77,11 +130,46 @@ class WeatherScreen extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  SizedBox(width: 100, child: WeatherForcastCards()),
-                  SizedBox(width: 100, child: WeatherForcastCards()),
-                  SizedBox(width: 100, child: WeatherForcastCards()),
-                  SizedBox(width: 100, child: WeatherForcastCards()),
-                  SizedBox(width: 100, child: WeatherForcastCards()),
+                  SizedBox(
+                    width: 100,
+                    child: WeatherForcastCards(
+                      rate: sunset.toString(),
+                      icon: Icons.wind_power,
+                      condition: 'Sunset',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: WeatherForcastCards(
+                      rate: sunrise.toString(),
+                      icon: Icons.sunny,
+                      condition: 'Sunrise',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: WeatherForcastCards(
+                      rate: "24",
+                      icon: Icons.wind_power,
+                      condition: 'Windy',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: WeatherForcastCards(
+                      rate: "12",
+                      icon: Icons.wb_sunny_rounded,
+                      condition: 'Sunny',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: WeatherForcastCards(
+                      rate: "24",
+                      icon: Icons.cloud,
+                      condition: 'Cloudy',
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -147,7 +235,16 @@ class WeatherScreen extends StatelessWidget {
 
 //template for weather forecast widgets
 class WeatherForcastCards extends StatelessWidget {
-  const WeatherForcastCards({super.key});
+  final String rate;
+  final IconData icon;
+  final String condition;
+
+  const WeatherForcastCards({
+    super.key,
+    required this.rate,
+    required this.icon,
+    required this.condition,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -155,17 +252,17 @@ class WeatherForcastCards extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            '03:00',
+            rate,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
 
           SizedBox(height: 5),
 
-          Icon(Icons.cloud, size: 30),
+          Icon(icon),
 
           SizedBox(height: 5),
 
-          Text('Sunny'),
+          Text(condition),
         ],
       ),
     );
