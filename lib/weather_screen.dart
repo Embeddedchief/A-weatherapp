@@ -44,7 +44,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           sunset = (data['sys']['sunset'] as num).toDouble();
           pressure = (data['main']['pressure'] as num).toInt();
           humidity = (data['main']['humidity'] as num).toInt();
-          // cloud = (data['clouds']['dt'] as num).toDouble();
+          cloud = (data['clouds']['all'] as num).toDouble();
         });
 
         print(jsonDecode(response.body));
@@ -59,7 +59,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: const Color.fromARGB(255, 25, 194, 241),
       appBar: AppBar(
         title: Row(
           children: [
@@ -206,6 +206,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                     width: 100,
@@ -213,11 +214,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       'Humidity',
                       '65%',
                       Icons.water_outlined,
-                      Color.fromARGB(255, 161, 205, 253),
+                      Color.fromARGB(255, 255, 147, 232),
                     ),
                   ),
 
-                  SizedBox(width: 2),
+                  SizedBox(width: 3),
 
                   SizedBox(
                     width: 100,
@@ -229,7 +230,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     ),
                   ),
 
-                  SizedBox(width: 2),
+                  SizedBox(width: 3),
 
                   SizedBox(
                     width: 100,
