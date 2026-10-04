@@ -17,6 +17,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
   double sunrise = 2344;
   double sunset = 2344;
   String measure = '°F';
+  int pressure = 24;
+  int humidity = 32;
+  double cloud = 57090;
 
   //Weather geter async function
   Future getCurrentWeather(String location) async {
@@ -39,8 +42,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
           temperature = data['main']['temp'];
           sunrise = (data['sys']['sunrise'] as num).toDouble();
           sunset = (data['sys']['sunset'] as num).toDouble();
+          pressure = (data['main']['pressure'] as num).toInt();
+          humidity = (data['main']['humidity'] as num).toInt();
+          // cloud = (data['clouds']['dt'] as num).toDouble();
         });
-  
+
         print(jsonDecode(response.body));
       } else {
         print('Request Failed: ${response.statusCode}');
@@ -116,6 +122,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
             SizedBox(height: 20),
 
+            //Weather Forecast
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -130,42 +137,51 @@ class _WeatherScreenState extends State<WeatherScreen> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
+                  Center(
+                    child: SizedBox(
+                      height: 100,
+                      width: 150,
+                      child: WeatherForcastCards(
+                        rate: sunrise.toString(),
+                        icon: Icons.sunny,
+                        condition: 'Sunrise',
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: SizedBox(
+                      height: 100,
+                      width: 150,
+                      child: WeatherForcastCards(
+                        rate: sunset.toString(),
+                        icon: Icons.sunny_snowing,
+                        condition: 'Sunset',
+                      ),
+                    ),
+                  ),
                   SizedBox(
-                    width: 100,
+                    height: 100,
+                    width: 150,
                     child: WeatherForcastCards(
-                      rate: sunset.toString(),
+                      rate: pressure.toString(),
                       icon: Icons.wind_power,
-                      condition: 'Sunset',
+                      condition: 'Pressure',
                     ),
                   ),
                   SizedBox(
-                    width: 100,
+                    height: 100,
+                    width: 150,
                     child: WeatherForcastCards(
-                      rate: sunrise.toString(),
-                      icon: Icons.sunny,
-                      condition: 'Sunrise',
-                    ),
-                  ),
-                  SizedBox(
-                    width: 100,
-                    child: WeatherForcastCards(
-                      rate: "24",
-                      icon: Icons.wind_power,
-                      condition: 'Windy',
-                    ),
-                  ),
-                  SizedBox(
-                    width: 100,
-                    child: WeatherForcastCards(
-                      rate: "12",
+                      rate: humidity.toString(),
                       icon: Icons.wb_sunny_rounded,
-                      condition: 'Sunny',
+                      condition: 'Humidity',
                     ),
                   ),
                   SizedBox(
-                    width: 100,
+                    height: 100,
+                    width: 150,
                     child: WeatherForcastCards(
-                      rate: "24",
+                      rate: cloud.toString(),
                       icon: Icons.cloud,
                       condition: 'Cloudy',
                     ),
@@ -176,6 +192,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
             SizedBox(height: 20),
 
+            //Additional Information
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -250,6 +267,8 @@ class WeatherForcastCards extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             rate,
